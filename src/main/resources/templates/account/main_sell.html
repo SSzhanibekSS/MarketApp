@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Seller</title>
+</head>
+<style>
+    .image-container {
+        width: 300px;
+        height: 200px;
+        border: 1px solid #ccc;
+        overflow: hidden;
+    }
+
+    .image-container img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+    .product-container {
+        border-bottom: 1px solid #ccc;
+        padding: 10px;
+        display: flex;
+    }
+
+    .product-info {
+        flex: 1;
+        margin-left: 10px;
+    }
+
+    .edit-form {
+        align-self: flex-start;
+    }
+    .top-right {
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 10px;
+    }
+
+    .top-right button {
+        margin-left: 10px;
+    }
+</style>
+
+<body>
+<p>Personal Account</p>
+
+<div class="top-right">
+    <button onclick="location.href='/home'; return false;">Home</button>
+    <button formmethod="post" onclick="location.href='/logout'; return false;">Logout</button>
+</div>
+<p>Photo of your store</p>
+<div class="image-container">
+    <img th:if="${base64String != null}" th:src="'data:image/jpeg;base64,' + ${base64String}" />
+</div>
+<p>Please select new image if you want to change your photo</p>
+<form action="/account/uploadPhoto" method="post" enctype="multipart/form-data">
+    <input type="file" name="file" accept="image/jpeg">
+    <input type="submit" value="Upload">
+</form>
+
+<br/>
+<br/>
+<form action="/product/add">
+    <input type="submit" value="Add new product">
+</form>
+
+<br/>
+<br/>
+<p>Your products</p>
+
+<div th:each="product : ${products}" class="product-container">
+    <div class="image-container">
+        <img th:if="${product.getImage() != null}" th:src="'data:image/jpeg;base64,' + ${product.getImage()}" />
+    </div>
+    <div class="product-info">
+        <p>Product Name: <span th:text="${product.getProductName()}"></span></p>
+        <p>Cost: <span th:text="${product.getProductCost()}"></span></p>
+    </div>
+    <form th:action="@{/product/edit/{productID}(productID=${product.getProductId()})}" class="edit-form">
+        <input type="submit" value="Edit">
+    </form>
+</div>
+
+
+
+</body>
+</html>

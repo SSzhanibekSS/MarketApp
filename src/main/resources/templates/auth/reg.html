@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration Page</title>
+</head>
+<body>
+
+<form th:method="POST" th:action="@{/auth/reg}" th:object="${person}">
+    <label for="username">Введите имя пользователя: </label>
+    <input type="text" th:field="*{username}" id="username"/>
+    <div style="color:red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username Error</div>
+    <br/>
+    <label for="yearOfBirth">Введите год рождения: </label>
+    <input type="text" th:field="*{yearOfBirth}" id="yearOfBirth"/>
+    <div style="color:red" th:if="${#fields.hasErrors('yearOfBirth')}" th:errors="*{yearOfBirth}">Year of birth Error
+    </div>
+    <br/>
+    <label for="email">Введите Email: </label>
+    <input type="text" th:field="*{email}" id="email"/>
+    <div style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">email error
+    </div>
+    <br/>
+    <label for="city">Введите City: </label>
+    <input type="text" th:field="*{city}" id="city"/>
+    <div style="color:red" th:if="${#fields.hasErrors('city')}" th:errors="*{city}">email error
+    </div>
+    <br/>
+    <label for="password">Введите пароль: </label>
+    <input type="password" th:field="*{password}" id="password"/>
+    <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</div>
+    <br/>
+    <label for="role">Выберите роль: </label>
+    <select th:field="*{role}" id="role">
+        <option value="ROLE_SELLER">Продавец</option>
+        <option value="ROLE_BUYER">Покупатель</option>
+    </select>
+    <br/>
+    <input type="submit" value="Sign up!"/>
+</form>
+</body>
+</html>

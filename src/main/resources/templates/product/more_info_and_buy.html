@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Information</title>
+</head>
+<style>
+    .image-container {
+        width: 300px;
+        height: 200px;
+        border: 1px solid #ccc;
+        overflow: hidden;
+    }
+
+    .image-container img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+    .product-container {
+        border-bottom: 1px solid #ccc;
+        padding: 10px;
+        display: flex;
+    }
+</style>
+<body>
+<p>Shop: <a th:text="${shop}"></a> </p>
+<div class="image-container">
+    <img th:if="${product.getImage() != null}" th:src="'data:image/jpeg;base64,' + ${product.getImage()}" />
+</div>
+<p>Product Type: <a style="color: green" th:text="${product.getProductType()}"></a> </p>
+<p>Product Name: <a th:text="${product.getProductName()}"></a> </p>
+<p>Product Cost: <a th:text="${product.getProductCost()}"></a> </p>
+<p>Product Count: <a th:text="${product.getProductCount()}"></a> </p>
+<p>Product Description:</p>
+<textarea th:text="${product.getDescription()}"></textarea>
+<br/>
+<div th:if="${product.getProductCount() > 1}">
+<form th:action="@{/product/buy/{prodID}(prodID=${product.getProductId()})}">
+    <input type="submit" value="Buy">
+</form>
+</div>
+<br/>
+<form action="/home">
+    <input type="submit" value="Back">
+</form>
+
+</body>
+</html>

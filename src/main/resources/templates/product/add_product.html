@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>New Product</title>
+</head>
+<body>
+
+<form th:method="POST" th:action="@{/product/add}" th:object="${product}">
+
+    <label for="product_name">Enter Product Name: </label>
+    <input type="text" th:field="*{productName}" id="product_name"/>
+    <div style="color:red" th:if="${#fields.hasErrors('productName')}" th:errors="*{productName}">Product Name Error</div>
+    <br/>
+    <label for="product_cost">Product cost: </label>
+    <input type="text" th:field="*{productCost}" id="product_cost"/>
+    <div style="color:red" th:if="${#fields.hasErrors('productCost')}" th:errors="*{productCost}">Cost Error
+    </div>
+    <br/>
+    <label for="product_count">Product Count: </label>
+    <input type="text" th:field="*{productCount}" id="product_count"/>
+    <div style="color:red" th:if="${#fields.hasErrors('productCount')}" th:errors="*{productCount}">email error
+    </div>
+    <br/>
+    <label for="description">Description: </label>
+    <textarea th:field="*{description}" id="description"></textarea>
+    <div style="color:red" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">email error</div>
+    <br/>
+
+    <label for="type">Chose product type: </label>
+    <select th:field="*{productType}" id="type">
+        <option value="Electronics">Electronics</option>
+        <option value="Clothing">Clothing and footwear</option>
+        <option value="Cosmetics">Cosmetics and perfumes</option>
+        <option value="Food">Food products</option>
+        <option value="Sporting">Sporting goods</option>
+    </select>
+    <br/>
+    <input type="submit" value="Add new product"/>
+</form>
+<form action="/account">
+    <input type="submit" value="Back">
+</form>
+</body>
+</html>

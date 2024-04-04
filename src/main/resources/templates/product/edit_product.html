@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit</title>
+</head>
+
+<style>
+    .image-container {
+        width: 300px;
+        height: 200px;
+        border: 1px solid #ccc;
+        overflow: hidden;
+    }
+
+    .image-container img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+    .product-container {
+        border-bottom: 1px solid #ccc;
+        padding: 10px;
+        display: flex;
+    }
+
+    .product-info {
+        flex: 1;
+        margin-left: 10px;
+    }
+
+    .edit-form {
+        align-self: flex-start;
+    }
+</style>
+<body>
+
+<p>Photo of your product</p>
+<div class="image-container">
+    <img th:if="${product.getImage() != null}" th:src="'data:image/jpeg;base64,' + ${product.getImage()}" />
+</div>
+<p>Please select new image if you want to change your photo</p>
+<form th:action="@{/product/uploadPhoto/{productID}(productID=${product.getProductId()})}" method="post" enctype="multipart/form-data">
+    <input type="file" name="file" accept="image/jpeg">
+    <input type="submit" value="Upload">
+</form>
+<br/>
+<br/>
+
+
+<form th:method="PATCH" th:action="@{/product/edit/{id}(id=${product_id})}" th:object="${product}">
+
+    <label for="product_name">Enter Product Name: </label>
+    <input type="text" th:field="*{productName}" id="product_name"/>
+    <div style="color:red" th:if="${#fields.hasErrors('productName')}" th:errors="*{productName}">Product Name Error</div>
+    <br/>
+    <label for="product_cost">Product cost: </label>
+    <input type="text" th:field="*{productCost}" id="product_cost"/>
+    <div style="color:red" th:if="${#fields.hasErrors('productCost')}" th:errors="*{productCost}">Cost Error
+    </div>
+    <br/>
+    <label for="product_count">Product Count: </label>
+    <input type="text" th:field="*{productCount}" id="product_count"/>
+    <div style="color:red" th:if="${#fields.hasErrors('productCount')}" th:errors="*{productCount}">email error
+    </div>
+    <br/>
+    <label for="description">Description: </label>
+    <textarea th:field="*{description}" id="description"></textarea>
+    <div style="color:red" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">email error</div>
+    <br/>
+    <input type="hidden" th:value="*{creator}" th:field="*{creator}" />
+
+
+    <label for="type">Chose product type: </label>
+    <select th:field="*{productType}" id="type">
+        <option value="Electronics">Electronics</option>
+        <option value="Clothing">Clothing and footwear</option>
+        <option value="Cosmetics">Cosmetics and perfumes</option>
+        <option value="Food">Food products</option>
+        <option value="Sporting">Sporting goods</option>
+    </select>
+    <br/>
+    <input type="submit" value="Edit"/>
+</form>
+<form action="/account">
+    <input type="submit" value="Back">
+</form>
+</body>
+</html>

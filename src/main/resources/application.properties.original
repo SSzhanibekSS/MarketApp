@@ -1,0 +1,15 @@
+# Database properties
+spring.datasource.url=jdbc:mysql://localhost:3306/mydb
+spring.datasource.username=${DB_USERNAME}
+spring.datasource.password=${DB_PASSWORD}
+
+# Hibernate properties
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+
+# Server properties
+server.port=${SERVER_PORT}
+
+# Cloud properties
+cloud.service.key=${CLOUD_SERVICE_KEY}
+cloud.service.secret=${CLOUD_SERVICE_SECRET}

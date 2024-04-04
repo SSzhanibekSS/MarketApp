@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<header>
+    <p>Market Application</p>
+
+</header>
+<style>
+    form {
+        display: flex; /* Используем flexbox для расположения элементов в строку */
+        flex-wrap: nowrap; /* Запрет переноса элементов на новую строку */
+        align-items: center; /* Выравниваем элементы по вертикали */
+    }
+
+    label, select, input[type="text"], input[type="submit"] {
+        margin-right: 10px; /* Расстояние между элементами */
+    }
+    .product-container {
+        display: flex; /* Используем flexbox для расположения элементов в строку */
+        border-bottom: 1px solid #ccc; /* Добавляем разделительную линию между продуктами */
+        padding-bottom: 10px; /* Отступ снизу для разделения продуктов */
+    }
+
+    .image-container {
+        width: 300px;
+        height: 200px;
+        border: 1px solid #ccc;
+        overflow: hidden;
+           }
+    .image-container img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+
+    .edit-form {
+        margin-left: auto; /* Перемещаем кнопку "More" вправо */
+        margin-top: -20px; /* Смещаем кнопку "More" вверх, чтобы она была выше текста о продукте */
+    }
+
+    .product-info {
+        flex-grow: 1; /* Растягиваем информацию о продукте на всю доступную ширину */
+    }
+    .top-right {
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 10px;
+    }
+
+    .top-right button {
+        margin-left: 10px;
+    }
+    .pagination {
+        display: flex;
+        justify-content: space-between; /* Равномерно распределить кнопки по контейнеру */
+        align-items: center; /* Выравнивание по вертикали */
+        margin-top: 20px;
+    }
+
+    .pagination form {
+        display: inline-block; /* Разместить кнопки в одну линию */
+    }
+</style>
+
+<body>
+
+<div class="top-right">
+    <button onclick="location.href='/account'; return false;">My Account</button>
+    <button onclick="location.href='/basket'; return false;">Basket</button>
+    <button formmethod="post" onclick="location.href='/logout'; return false;">logout</button>
+</div>
+
+
+<form action="/home" method="GET">
+    <label for="search">Search: </label>
+    <input type="text" id="search" name="search">
+    <input type="submit" value="Search">
+
+    <label for="category">Category: </label>
+    <select id="category" name="category">
+        <option value="all">All</option>
+        <option value="Electronics">Electronics</option>
+        <option value="Clothing">Clothing and footwear</option>
+        <option value="Cosmetics">Cosmetics and perfumes</option>
+        <option value="Food">Food products</option>
+        <option value="Sporting">Sporting goods</option>
+    </select>
+
+    <label for="sort">Sort by: </label>
+    <select id="sort" name="sort">
+        <option value="product_cost">Cost</option>
+        <option value="product_count">Count</option>
+        <option value="product_name">Name</option>
+    </select>
+</form>
+
+
+
+<p>All products</p>
+
+
+<div th:if="${!products.isEmpty()}">
+<div th:each="product : ${products}" class="product-container">
+    <div class="image-container">
+        <img th:if="${product.getImage() != null}" th:src="'data:image/jpeg;base64,' + ${product.getImage()}" />
+    </div>
+    <div class="product-info">
+        <p>Product Name: <span th:text="${product.getProductName()}"></span></p>
+        <p>Cost: <span th:text="${product.getProductCost()}"></span></p>
+    </div>
+
+    <div th:if="${person.getRole() == 'ROLE_BUYER'}">
+    <form th:action="@{/home/more/{productID}(productID=${product.getProductId()})}" class="edit-form">
+        <input type="submit" value="More">
+    </form>
+</div>
+</div>
+
+<div class="pagination">
+    <div th:if="!${products.isEmpty()}">
+        <div th:if="${page} == 0">
+            <form th:action="@{/home}">
+                <input type="hidden" name="page" th:value="${page + 1}">
+                <button type="submit">Next>></button>
+            </form>
+        </div>
+        <div th:if="${page} > 0">
+            <form th:action="@{/home}">
+                <input type="hidden" name="page" th:value="${page - 1}">
+                <button type="submit"><-Prev</button>
+            </form>
+            <form th:action="@{/home}">
+                <input type="hidden" name="page" th:value="${page + 1}">
+                <button type="submit">Next-></button>
+            </form>
+        </div>
+    </div>
+
+
+</div>
+
+
+</div>
+<div th:if="${products.isEmpty()}">
+    <p>There no product with this parameter</p>
+    <div th:if="${products.isEmpty() && page > 0}">
+        <form th:action="@{/home}">
+            <input type="hidden" name="page" th:value="${page - 1}">
+            <button type="submit"><-Prev</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>
